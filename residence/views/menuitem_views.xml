@@ -1,0 +1,13 @@
+<odoo>
+    <!-- Menu Item -->
+    <menuitem name="Residence" id="menu_dashboard_residence" web_icon="residence,static/description/odoo_icon.png"/>
+
+    <menuitem name="Operation" id="menu_bar_operation" parent="menu_dashboard_residence" sequence="1"/>
+    <menuitem id="menu_item_property_request" name="Request in" parent="menu_bar_operation" action="property_request_action"/>
+    <menuitem id="menu_item_property_request_out" name="Request out" parent="menu_bar_operation" action="property_request_out_action"/>
+
+    <menuitem name="Configuration" id="menu_bar_config" parent="menu_dashboard_residence" sequence="2"/>
+    <menuitem name="Property" id="menu_item_property" parent="menu_bar_config" action="property_action" groups="residence.group_residence_manager"/>
+    <menuitem id="menu_item_property_line" name="Property Line" parent="menu_bar_config" action="property_line_action" groups="residence.group_residence_manager"/>
+
+</odoo>

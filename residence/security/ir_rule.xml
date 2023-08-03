@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record model="ir.rule" id="rule_request_user">
+            <field name="name">User can only read their request</field>
+            <field name="model_id" ref="model_hr_property_request"></field>
+            <field name="groups" eval="[(4,ref('group_residence_user'))]"></field>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        </record>
+        <record model="ir.rule" id="rule_request_manager">
+            <field name="name">Manager can read every request</field>
+            <field name="model_id" ref="model_hr_property_request"></field>
+            <field name="groups" eval="[(4,ref('group_residence_manager'))]"></field>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+    </data>
+</odoo>

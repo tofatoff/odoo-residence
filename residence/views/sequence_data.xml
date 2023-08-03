@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+        <record id="seq_residence_request" model="ir.sequence">
+            <field name="name">Residence Request</field>
+            <field name="code">residence.request</field>
+            <field name="prefix">PR/</field>
+            <field name="padding">4</field>
+        </record>
+ 
+        <record id="seq_residence_request_out" model="ir.sequence">
+            <field name="name">Residence Request Out</field>
+            <field name="code">residence.request.out</field>
+            <field name="prefix">PRO/</field>
+            <field name="padding">4</field>
+        </record>
+ 
+    </data>
+</odoo>

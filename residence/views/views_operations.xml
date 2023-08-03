@@ -1,0 +1,223 @@
+<odoo>
+    <data>
+        <!-- View Tree/List Property Request -->
+
+        <record id="property_request_view_tree" model="ir.ui.view">
+            <field name="name">property.request.tree</field>
+            <field name="model">hr.property.request</field>
+            <field name="arch" type="xml">
+                <tree string="Properties Request List">
+                    <field name="name" />
+                    <field name="property_id" />
+                    <field name="property_line_id" />
+                    <field name="create_uid" groups="residence.group_residence_manager" />
+                    <field name="state" widget="badge" decoration-success="state == 'done'" decoration-warning="state == 'waiting'" decoration-info="state == 'process'" decoration-bf="state == 'draft'" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- View Kanban Property Request -->
+
+        <record id="property_request_view_kanban" model="ir.ui.view">
+            <field name="name">property.request.kanban</field>
+            <field name="model">hr.property.request</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name" />
+                    <field name="property_id" />
+                    <field name="property_line_id" />
+                    <field name="create_uid" />
+                    <field name="state" />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <t t-esc="record.name.value"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <div class="oe_kanban_details">
+                                            <ul>
+                                                <li groups="residence.group_residence_manager">
+                                                    <t t-esc="'Requester: ' + record.create_uid.value"/>
+                                                </li>
+                                                <li>
+                                                    <field name="property_id"/>
+                                                    <t t-if="record.property_line_id.value">
+                                                        <t t-esc="' - ' + record.property_line_id.value"/>
+                                                    </t>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right mr4">
+                                        <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'process':'info', 'waiting':'warning', 'done': 'success'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- View Form Property Request -->
+
+        <record id="property_request_view_form" model="ir.ui.view">
+            <field name="name">property.request.form</field>
+            <field name="model">hr.property.request</field>
+            <field name="arch" type="xml">
+                <form string="Property Request Form">
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirm" states="draft" class="oe_highlight" />
+                        <button name="action_approve" type="object" string="Approve" states="process" class="oe_highlight" groups="residence.group_residence_manager" />
+                        <button name="action_done" type="object" string="Done" states="waiting" class="oe_highlight" groups="residence.group_residence_manager" />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Draft" bg_color="bg-dark" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <widget name="web_ribbon" title="Process" bg_color="bg-info" attrs="{'invisible': [('state', '!=', 'process')]}"/>
+                        <widget name="web_ribbon" title="Waiting" bg_color="bg-warning" attrs="{'invisible': [('state', '!=', 'waiting')]}"/>
+                        <widget name="web_ribbon" title="Approved" bg_color="bg-success" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="employee_id" widget="many2one_avatar_employee" options="{'no_create':True, 'no_open':True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="property_id" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'no_create':True, 'no_open':True}"/>
+                            <field name="property_line_id" attrs="{
+                                'invisible': [('state', 'not in', ['waiting','done'])],
+              'required': [('state', '=', 'waiting')], 
+              'readonly': [('state', '=', 'done')]
+              }" domain="[('property_id', '=', property_id), ('state', '=', 'ready')]" options="{'no_create':True, 'no_open':True}" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- View Tree/List Property Request Out -->
+
+        <record id="property_request_out_view_tree" model="ir.ui.view">
+            <field name="name">property.request.out.tree</field>
+            <field name="model">hr.property.request.out</field>
+            <field name="arch" type="xml">
+                <tree string="Properties Request Out List">
+                    <field name="name"/>
+                    <field name="request_in"/>
+                    <field name="property_id"/>
+                    <field name="property_line_id"/>
+                    <field name="create_uid" groups="residence.group_residence_manager" />
+                    <field name="state" widget="badge" decoration-success="state == 'done'" decoration-warning="state == 'waiting'" decoration-info="state == 'process'" decoration-bf="state == 'draft'" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- View Kanban Property Request Out -->
+
+        <record id="property_request_out_view_kanban" model="ir.ui.view">
+            <field name="name">property.request.out.kanban</field>
+            <field name="model">hr.property.request.out</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name" />
+                    <field name="request_in" />
+                    <field name="property_id" />
+                    <field name="property_line_id" />
+                    <field name="create_uid" />
+                    <field name="state" />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <t t-esc="record.name.value"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <div class="oe_kanban_details">
+                                            <ul>
+                                                <li>
+                                                <t t-esc="'Request No: ' + record.request_in.value" />
+                                                </li>
+                                                <li groups="residence.group_residence_manager">
+                                           <t t-esc="'Requester: ' + record.create_uid.value"/>
+                                                </li>
+                                                <li>
+                                                    <field name="property_id"/>
+                                                    <t t-if="record.property_line_id.value">
+                                                        <t t-esc="' - ' + record.property_line_id.value"/>
+                                                    </t>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right mr4">
+                                        <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'process':'info', 'done': 'success'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- View Form Property Request Out -->
+
+        <record id="property_request_out_view_form" model="ir.ui.view">
+            <field name="name">property.request.out.form</field>
+            <field name="model">hr.property.request.out</field>
+            <field name="arch" type="xml">
+                <form string="Property Request Out Form">
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirm" states="draft" class="oe_highlight" />
+                        <button name="action_done" type="object" string="Done" states="process" class="oe_highlight" groups="residence.group_residence_manager" />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Draft" bg_color="bg-dark" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <widget name="web_ribbon" title="Process" bg_color="bg-info" attrs="{'invisible': [('state', '!=', 'process')]}"/>
+                        <widget name="web_ribbon" title="Approved" bg_color="bg-success" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="request_in" options="{'no_create':True, 'no_open':True}" attrs="{'readonly': [('state', '=', 'done')]}" />
+                            <field name="employee_id" widget="many2one_avatar_employee" options="{'no_open':True}" readonly="1"/>
+                            <field name="property_id" options="{'no_open':True}" readonly="1"/>
+                            <field name="property_line_id" options="{'no_open':True}" readonly="1"/>
+                            <field name="checkout_date" attrs="{'readonly': [('state', '=', 'done')]}" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Actions -->
+
+        <record id="property_request_action" model="ir.actions.act_window">
+            <field name="name">Property Request</field>
+            <field name="res_model">hr.property.request</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="property_request_out_action" model="ir.actions.act_window">
+            <field name="name">Property Request Out</field>
+            <field name="res_model">hr.property.request.out</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+    </data>
+</odoo>

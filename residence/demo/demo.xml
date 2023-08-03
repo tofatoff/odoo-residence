@@ -1,0 +1,21 @@
+<odoo>
+  <data>
+    <record id="data_demo_property_1" model="hr.property">
+      <field name="name">name 1</field>
+      <field name="location">location 1</field>
+      <field name="code">code 1</field>
+    </record>
+
+    <record id="data_demo_property_2" model="hr.property">
+      <field name="name">name 2</field>
+      <field name="location">location 2</field>
+      <field name="code">code 2</field>
+    </record>
+
+    <record id="data_demo_property_3" model="hr.property">
+      <field name="name">name 3</field>
+      <field name="location">location 3</field>
+      <field name="code">code 3</field>
+    </record>
+  </data>
+</odoo>
